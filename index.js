@@ -22,7 +22,26 @@ export async function connectToMongoDB() {
 const connectMongo=await connectToMongoDB()
 
 const myDB = connectMongo.db("equip-ease-server");
-const myColl = myDB.collection("categories");
+const allCategories = myDB.collection("categories");
+
+
+// equipment api
+app.post('/categories',async(req,res)=>{
+  const newCategories = req.body
+  console.log(newCategories)
+  const result = await allCategories.insertOne(newCategories);
+  res.send(result)
+})
+
+//get categories
+
+app.get('/categories',async(req,res)=>{
+    const query={}
+     const cursor= allCategories.find(query)
+  const result = await cursor.toArray()
+  res.send(result)
+})
+
 
 
 app.get('/', (req, res) => {
