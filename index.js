@@ -47,6 +47,7 @@ app.post('/categories',async(req,res)=>{
 
 
 
+
 app.get('/categories', async (req, res) => {
     try {
         const query = {};
@@ -56,7 +57,7 @@ app.get('/categories', async (req, res) => {
             location,
             category,
             brand,
-            price: rentalPrice,
+            price,
             search
         } = req.query;
 
@@ -87,10 +88,10 @@ app.get('/categories', async (req, res) => {
         }
 
         // Price Range Filter
-        if (rentalPrice && rentalPrice !== "all") {
-            const [minPrice, maxPrice] = rentalPrice.split("-").map(Number);
+        if (price && price !== "all") {
+            const [minPrice, maxPrice] = price.split("-").map(Number);
 
-            query.price = {
+            query.rentalPrice = {
                 $gte: minPrice,
                 $lte: maxPrice
             };
@@ -141,6 +142,7 @@ app.get('/categories', async (req, res) => {
         });
     }
 });
+
 
 
 
