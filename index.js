@@ -198,6 +198,31 @@ app.get('/application',async(req,res)=>{
   const result = await cursor.toArray()
   res.send(result)
 })
+app.delete('/application/:id',async(req,res)=>{
+  const id = req.params.id
+  const query = {
+    $or:[
+      {_id: new ObjectId(id)},
+      {_id:id}
+    ]
+  }
+   const result =await allApplications.deleteOne(query)
+  res.send(result)
+})
+
+//count application
+app.get('/application/count',async(req,res)=>{
+  const query ={}
+  if(req.query.applicantId){
+    query.userId=req.query.applicantId
+  }
+  if(req.query.categoryId){
+    query.categoryId=req.query.categoryId
+  }
+   const result= await allApplications.countDocuments(query)
+
+  res.send({count:result})
+})
 
 
 app.get('/', (req, res) => {
