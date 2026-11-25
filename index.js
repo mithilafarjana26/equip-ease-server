@@ -188,6 +188,12 @@ app.post('/application',async(req,res)=>{
 
 app.get('/application',async(req,res)=>{
     const query ={}
+      if(req.query.applicantId){
+    query.userId=req.query.applicantId
+  }
+  if(req.query.categoryId){
+    query.categoryId=req.query.categoryId
+  }
       const cursor= allApplications.find(query)
   const result = await cursor.toArray()
   res.send(result)
