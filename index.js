@@ -24,6 +24,7 @@ const connectMongo=await connectToMongoDB()
 const myDB = connectMongo.db("equip-ease-server");
 const allUsers = myDB.collection("user");
 const allCategories = myDB.collection("categories");
+const allApplications = myDB.collection("application");
 
 
 
@@ -158,6 +159,39 @@ app.get('/categories/:id', async (req, res) => {
     res.send(result);
 });
 
+
+//delete category
+app.delete('/categories/:id',async(req,res)=>{
+  const id = req.params.id
+  const query = {
+    $or:[
+      {_id: new ObjectId(id)},
+      {_id:id}
+    ]
+  }
+   const result =await allCategories.deleteOne(query)
+  res.send(result)
+})
+
+
+
+//post applicant
+
+app.post('/application',async(req,res)=>{
+  const newApplication = req.body
+//   console.log(newApplication)
+  const result = await allApplications.insertOne(newApplication)
+  res.send(result)
+})
+
+//get applications
+
+app.get('/application',async(req,res)=>{
+    const query ={}
+      const cursor= allApplications.find(query)
+  const result = await cursor.toArray()
+  res.send(result)
+})
 
 
 app.get('/', (req, res) => {
